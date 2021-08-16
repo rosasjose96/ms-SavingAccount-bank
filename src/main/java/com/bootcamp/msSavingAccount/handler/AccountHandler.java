@@ -57,7 +57,7 @@ public class AccountHandler {
                                     LOGGER.info("La cuenta encontrada es: " + accountFound.getCustomerIdentityNumber());
                                     return Mono.empty();
                                 }else {
-                                    LOGGER.info("No encontró nada: ");
+                                    LOGGER.info("No se encontró la cuenta ");
                                     return service.create(account);
                                 }
                             });
