@@ -45,6 +45,7 @@ public class AccountHandler {
         Mono<Account> accountMono = request.bodyToMono(Account.class);
 
         return accountMono.flatMap( account -> customerService.getCustomer(account.getCustomerIdentityNumber())
+                .filter(customer -> customer.getCustomerIdentityType().equals("DNI"))
                 .flatMap(customerDTO -> {
                     account.setTypeOfAccount("SAVING_ACCOUNT");
                     account.setCustomer(customerDTO);
