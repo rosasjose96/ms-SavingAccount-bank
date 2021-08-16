@@ -29,7 +29,7 @@ public class CustomerDTOServiceImpl implements ICustomerDTOService {
         LOGGER.info("initializing client query");
         params.put("customerIdentityNumber",customerIdentityNumber);
         return webClientBuilder
-                .baseUrl("http://localhost:8081/customer")
+                .baseUrl("http://CUSTOMER-SERVICE/customer")
                 .build()
                 .get()
                 .uri("/findCustomerCredit/{customerIdentityNumber}",customerIdentityNumber)
