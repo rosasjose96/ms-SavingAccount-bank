@@ -6,6 +6,7 @@ import com.bootcamp.msSavingAccount.services.IAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +15,9 @@ import reactor.core.publisher.Mono;
 public class AccountServiceImpl implements IAccountService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+
+    @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
 
     @Autowired
     private AccountRepository repository;
@@ -58,6 +62,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Mono<Account> findByAccountNumber(String accountNumber) {
         LOGGER.info("El AccountNumber es" + accountNumber);
-        return repository.findByAccountNumber(accountNumber);
+        return circuitBreakerFactory.create("items")
+                .run(() -> repository.findByAccountNumber(accountNumber),e ->repository.findByAccountNumber(accountNumber));
     }
 }
