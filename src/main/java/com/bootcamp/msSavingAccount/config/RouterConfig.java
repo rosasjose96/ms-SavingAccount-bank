@@ -10,9 +10,18 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
+/**
+ * The type Router config.
+ */
 @Configuration
 public class RouterConfig {
 
+    /**
+     * Routes router function.
+     *
+     * @param accountHandler the account handler
+     * @return the router function
+     */
     @Bean
     public RouterFunction<ServerResponse> routes(AccountHandler accountHandler){
 

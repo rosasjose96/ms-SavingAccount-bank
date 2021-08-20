@@ -13,15 +13,28 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 
+/**
+ * The type Web client config.
+ */
 @Configuration
 public class WebClientConfig {
 
+    /**
+     * Registrar web client web client . builder.
+     *
+     * @return the web client . builder
+     */
     @Bean
     @LoadBalanced
     public WebClient.Builder registrarWebClient() {
         return WebClient.builder();
     }
 
+    /**
+     * Default customizer customizer.
+     *
+     * @return the customizer
+     */
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)

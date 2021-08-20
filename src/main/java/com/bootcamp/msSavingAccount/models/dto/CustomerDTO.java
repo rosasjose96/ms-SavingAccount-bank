@@ -2,6 +2,9 @@ package com.bootcamp.msSavingAccount.models.dto;
 
 import lombok.*;
 
+/**
+ * The type Customer dto.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

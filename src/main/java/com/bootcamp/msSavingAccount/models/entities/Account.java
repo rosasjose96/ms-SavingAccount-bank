@@ -10,6 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+/**
+ * The type Account.
+ */
 @Document(collection = "accountsaving")
 @Setter
 @Getter
