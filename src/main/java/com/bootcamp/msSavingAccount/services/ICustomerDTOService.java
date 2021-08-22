@@ -1,5 +1,6 @@
 package com.bootcamp.msSavingAccount.services;
 
+import com.bootcamp.msSavingAccount.models.dto.Customer;
 import com.bootcamp.msSavingAccount.models.dto.CustomerDTO;
 import reactor.core.publisher.Mono;
 
@@ -13,5 +14,5 @@ public interface ICustomerDTOService {
      * @param customerIdentityNumber the customer identity number
      * @return the customer
      */
-    public Mono<CustomerDTO> getCustomer(String customerIdentityNumber);
+    public Mono<Customer> getCustomer(String customerIdentityNumber);
 }

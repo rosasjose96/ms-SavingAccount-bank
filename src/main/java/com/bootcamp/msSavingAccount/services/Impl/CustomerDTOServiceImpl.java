@@ -1,5 +1,6 @@
 package com.bootcamp.msSavingAccount.services.Impl;
 
+import com.bootcamp.msSavingAccount.models.dto.Customer;
 import com.bootcamp.msSavingAccount.models.dto.CustomerDTO;
 import com.bootcamp.msSavingAccount.repositories.AccountRepository;
 import com.bootcamp.msSavingAccount.services.ICustomerDTOService;
@@ -27,7 +28,7 @@ public class CustomerDTOServiceImpl implements ICustomerDTOService {
 
 
     @Override
-    public Mono<CustomerDTO> getCustomer(String customerIdentityNumber){
+    public Mono<Customer> getCustomer(String customerIdentityNumber){
         Map<String, Object> params = new HashMap<String,Object>();
         LOGGER.info("initializing client query");
         params.put("customerIdentityNumber",customerIdentityNumber);
@@ -37,7 +38,7 @@ public class CustomerDTOServiceImpl implements ICustomerDTOService {
                 .get()
                 .uri("/findCustomerCredit/{customerIdentityNumber}",customerIdentityNumber)
                 .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(CustomerDTO.class))
+                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(Customer.class))
                 .doOnNext(c -> LOGGER.info("Customer Response: Customer={}", c.getName()));
     }
 }

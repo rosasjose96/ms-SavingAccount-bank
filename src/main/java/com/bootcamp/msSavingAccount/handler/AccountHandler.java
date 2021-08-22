@@ -1,5 +1,6 @@
 package com.bootcamp.msSavingAccount.handler;
 
+import com.bootcamp.msSavingAccount.models.dto.CustomerDTO;
 import com.bootcamp.msSavingAccount.models.entities.Account;
 import com.bootcamp.msSavingAccount.services.IAccountService;
 import com.bootcamp.msSavingAccount.services.ICustomerDTOService;
@@ -66,10 +67,12 @@ public class AccountHandler {
         Mono<Account> accountMono = request.bodyToMono(Account.class);
 
         return accountMono.flatMap( account -> customerService.getCustomer(account.getCustomerIdentityNumber())
-                .filter(customer -> customer.getCustomerIdentityType().equals("DNI"))
-                .flatMap(customerDTO -> {
+                .filter(customer -> customer.getCustomerType().getCode().equals("1001")||customer.getCustomerType().getCode().equals("1001"))
+                .flatMap(customer -> {
+                    account.setCustomer(CustomerDTO.builder()
+                            .name(customer.getName()).code(customer.getCustomerType().getCode())
+                            .customerIdentityNumber(customer.getCustomerIdentityNumber()).build());
                     account.setTypeOfAccount("SAVING_ACCOUNT");
-                    account.setCustomer(customerDTO);
                     account.setMaxLimitMovementPerMonth(6);
                     account.setMovementPerMonth(0);
                     return service.validateCustomerIdentityNumber(account.getCustomerIdentityNumber())
