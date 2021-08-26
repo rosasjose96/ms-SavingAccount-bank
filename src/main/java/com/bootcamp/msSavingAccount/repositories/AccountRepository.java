@@ -14,7 +14,7 @@ public interface AccountRepository extends ReactiveMongoRepository<Account, Stri
      * @param customerIdentityNumber the customer identity number
      * @return the mono
      */
-    public Mono<Account> findByCustomerIdentityNumber(String customerIdentityNumber);
+    Mono<Account> findByCustomerIdentityNumber(String customerIdentityNumber);
 
     /**
      * Find by account number mono.

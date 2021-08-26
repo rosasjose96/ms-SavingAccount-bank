@@ -21,7 +21,7 @@ public interface IAccountService extends ICRUDService<Account, String> {
      * @param customerIdentityNumber the customer identity number
      * @return the mono
      */
-    public Mono<Account> validateCustomerIdentityNumber(String customerIdentityNumber);
+    Mono<Account> validateCustomerIdentityNumber(String customerIdentityNumber);
 
     /**
      * Find by account number mono.
@@ -29,5 +29,6 @@ public interface IAccountService extends ICRUDService<Account, String> {
      * @param accountNumber the account number
      * @return the mono
      */
-    public Mono<Account> findByAccountNumber(String accountNumber);
+    Mono<Account> findByAccountNumber(String accountNumber);
+
 }

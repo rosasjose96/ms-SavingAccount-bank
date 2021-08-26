@@ -3,6 +3,7 @@ package com.bootcamp.msSavingAccount.handler;
 import com.bootcamp.msSavingAccount.models.dto.CustomerDTO;
 import com.bootcamp.msSavingAccount.models.entities.Account;
 import com.bootcamp.msSavingAccount.services.IAccountService;
+import com.bootcamp.msSavingAccount.services.ICreditService;
 import com.bootcamp.msSavingAccount.services.ICustomerDTOService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class AccountHandler {
 
     @Autowired
     private ICustomerDTOService customerService;
+
+    @Autowired
+    private ICreditService creditService;
 
     /**
      * Find all mono.
@@ -67,15 +71,20 @@ public class AccountHandler {
         Mono<Account> accountMono = request.bodyToMono(Account.class);
 
         return accountMono.flatMap( account -> customerService.getCustomer(account.getCustomerIdentityNumber())
-                .filter(customer -> customer.getCustomerType().getCode().equals("1001")||customer.getCustomerType().getCode().equals("1001"))
+                .filter(customer -> customer.getCustomerType().getCode().equals("1001")||customer.getCustomerType().getCode().equals("1002"))
                 .flatMap(customer -> {
                     account.setCustomer(CustomerDTO.builder()
                             .name(customer.getName()).code(customer.getCustomerType().getCode())
                             .customerIdentityNumber(customer.getCustomerIdentityNumber()).build());
                     account.setTypeOfAccount("SAVING_ACCOUNT");
-                    account.setMaxLimitMovementPerMonth(6);
+                    account.setMaxLimitMovementPerMonth(account.getMaxLimitMovementPerMonth());
                     account.setMovementPerMonth(0);
-                    return service.validateCustomerIdentityNumber(account.getCustomerIdentityNumber())
+                    return creditService.validateDebtorCredit(account.getCustomerIdentityNumber())
+                            .flatMap(debtor -> {
+                                if(debtor == true) {
+                                    return Mono.empty();
+                                }else return service.validateCustomerIdentityNumber(account.getCustomerIdentityNumber());
+                            })
                             .flatMap(accountFound -> {
                                 if(accountFound.getCustomerIdentityNumber() != null){
                                     LOGGER.info("La cuenta encontrada es: " + accountFound.getCustomerIdentityNumber());
