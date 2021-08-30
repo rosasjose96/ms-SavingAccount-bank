@@ -65,7 +65,6 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Mono<Account> findByAccountNumber(String accountNumber) {
         LOGGER.info("El AccountNumber es" + accountNumber);
-        return circuitBreakerFactory.create("items")
-                .run(() -> repository.findByAccountNumber(accountNumber),e ->repository.findByAccountNumber(accountNumber));
+        return  repository.findByAccountNumber(accountNumber);
     }
 }
